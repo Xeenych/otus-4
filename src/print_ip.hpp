@@ -1,9 +1,12 @@
 #pragma once
 #include <iomanip>
 #include <iostream>
+#include <string>
 
 template <typename T>
-void print_ip_(T v);
+void print_ip_(T v) {
+    std::cout << v;
+}
 
 template <typename T>
 void print_ip(T v) {
@@ -31,4 +34,12 @@ void print_ip_<int32_t>(int32_t v) {
     print_ip_<int16_t>(v >> 16);
     std::cout << '.';
     print_ip_<int16_t>(v);
+}
+
+//  Специализация для int64_t
+template <>
+void print_ip_<int64_t>(int64_t v) {
+    print_ip_<int32_t>(v >> 32);
+    std::cout << '.';
+    print_ip_<int32_t>(v);
 }
