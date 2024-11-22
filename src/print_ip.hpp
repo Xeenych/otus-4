@@ -2,11 +2,10 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <vector>
 
 template <typename T>
-void print_ip_(T v) {
-    std::cout << v;
-}
+void print_ip_(T v);
 
 template <typename T>
 void print_ip(T v) {
@@ -42,4 +41,17 @@ void print_ip_<int64_t>(int64_t v) {
     print_ip_<int32_t>(v >> 32);
     std::cout << '.';
     print_ip_<int32_t>(v);
+}
+
+// Этот вводит std::string
+template <>
+void print_ip_<std::string>(std::string v) {
+    std::cout << v;
+}
+
+template <>
+void print_ip_<std::vector<int>>(std::vector<int> v) {
+    for (const auto& i : v) {
+        print_ip_<int>(i);
+    }
 }
