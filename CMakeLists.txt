@@ -7,6 +7,6 @@ add_compile_options(-Wextra)
 add_compile_options(-Warray-bounds)
 #add_compile_options(-Weffc++)
 
-add_executable(sfinae src/main.cpp)
-set_target_properties(sfinae PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
+add_executable(print_ip src/main.cpp)
+set_target_properties(print_ip PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 
