@@ -1,6 +1,7 @@
 #pragma once
 #include <iomanip>
 #include <iostream>
+#include <list>
 #include <string>
 #include <vector>
 
@@ -52,6 +53,19 @@ void print_ip_<std::string>(std::string v) {
 template <>
 void print_ip_<std::vector<int>>(std::vector<int> v) {
     for (const auto& i : v) {
-        print_ip_<int>(i);
+        std::cout << i;
+        if (v.back() != i) {
+            std::cout << '.';
+        }
+    }
+}
+
+template <>
+void print_ip_<std::list<short>>(std::list<short> v) {
+    for (const auto& i : v) {
+        std::cout << i;
+        if (v.back() != i) {
+            std::cout << '.';
+        }
     }
 }
