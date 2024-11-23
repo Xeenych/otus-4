@@ -1,4 +1,6 @@
 #pragma once
+#include "tuple_helper.hpp"
+
 #include <iomanip>
 #include <iostream>
 #include <list>
@@ -7,7 +9,6 @@
 
 template <typename T>
 void print_ip_(T v);
-
 
 template <typename T>
 void print_ip(T v) {
@@ -52,35 +53,16 @@ void print_ip_<std::string>(std::string v) {
     std::cout << v;
 }
 */
-template <template <typename, typename> typename Container, typename Type,
-          typename Allocator = std::allocator<Type>
-          //,typename = std::enable_if_t<std::is_same_v<
-            //  Container<Type, Allocator>, std::vector<Type, Allocator> > > 
-            >
+
+template <template <typename, typename> typename Container, typename Type, typename Allocator = std::allocator<Type>,
+          typename = std::enable_if_t<std::is_same_v<Container<Type, Allocator>, std::vector<Type, Allocator>>>>
 void print_ip(Container<Type, Allocator> c) {
     std::cout << "enabled for any container" << std::endl;
 }
 
-
-/*
-template <>
-void print_ip_<std::vector<int>>(std::vector<int> v) {
-    for (const auto& i : v) {
-        std::cout << i;
-        if (v.back() != i) {
-            std::cout << '.';
-        }
-    }
-}*/
-
-/*
-template <>
-void print_ip_<std::list<short>>(std::list<short> v) {
-    for (const auto& i : v) {
-        std::cout << i;
-        if (v.back() != i) {
-            std::cout << '.';
-        }
-    }
+// Печать std::tuple!!!
+// Включается только для std::tuple с одинаковыми элементами
+template <template <typename> typename Tp, typename... Args, typename = std::enable_if_t<check<Tp<Args...>>::value>>
+void print_ip(Tp<Args...> c) {
+    std::cout << "enabled for tuple" << std::endl;
 }
-*/
