@@ -8,12 +8,14 @@
 template <typename T>
 void print_ip_(T v);
 
+
 template <typename T>
 void print_ip(T v) {
     print_ip_<T>(v);
     std::cout << std::endl;
 }
 
+/*
 //  Специализация для int8_t
 template <>
 void print_ip_<int8_t>(int8_t v) {
@@ -49,7 +51,18 @@ template <>
 void print_ip_<std::string>(std::string v) {
     std::cout << v;
 }
+*/
+template <template <typename, typename> typename Container, typename Type,
+          typename Allocator = std::allocator<Type>
+          //,typename = std::enable_if_t<std::is_same_v<
+            //  Container<Type, Allocator>, std::vector<Type, Allocator> > > 
+            >
+void print_ip(Container<Type, Allocator> c) {
+    std::cout << "enabled for any container" << std::endl;
+}
 
+
+/*
 template <>
 void print_ip_<std::vector<int>>(std::vector<int> v) {
     for (const auto& i : v) {
@@ -58,8 +71,9 @@ void print_ip_<std::vector<int>>(std::vector<int> v) {
             std::cout << '.';
         }
     }
-}
+}*/
 
+/*
 template <>
 void print_ip_<std::list<short>>(std::list<short> v) {
     for (const auto& i : v) {
@@ -69,3 +83,4 @@ void print_ip_<std::list<short>>(std::list<short> v) {
         }
     }
 }
+*/
