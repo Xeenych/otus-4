@@ -1,19 +1,26 @@
 #pragma once
+#include "container_helper.hpp"
+#include "integral_helper.hpp"
 #include "tuple_helper.hpp"
 
-#include <iomanip>
-#include <iostream>
 #include <list>
 #include <string>
 #include <vector>
 
-template <typename T>
-void print_ip_(T v);
+// Главный шаблон с двумя парамтерами, чтобы различать integral и std::string
+template <typename T, typename enable = void>
+void print_ip(T v);
 
-template <typename T>
+// Для std::string
+template <>
+void print_ip<std::string>(std::string v) {
+    std::cout << v << std::endl;
+}
+
+// Для вывода целых типов
+template <typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
 void print_ip(T v) {
-    print_ip_<T>(v);
-    std::cout << std::endl;
+    print_integral(v);
 }
 
 /*
@@ -46,23 +53,22 @@ void print_ip_<int64_t>(int64_t v) {
     std::cout << '.';
     print_ip_<int32_t>(v);
 }
-
-// Этот вводит std::string
-template <>
-void print_ip_<std::string>(std::string v) {
-    std::cout << v;
-}
 */
 
+// Шаблон с тремя параметрами
+// Работает для любого контейнера, кроме std::string, потому что std::string захватывается боле узким шаблоном с одним
+// параметром
 template <template <typename, typename> typename Container, typename Type, typename Allocator = std::allocator<Type>,
-          typename = std::enable_if_t<std::is_same_v<Container<Type, Allocator>, std::vector<Type, Allocator>>>>
+          typename = std::enable_if_t<(std::is_same_v<Container<Type, Allocator>, std::vector<Type, Allocator>> ||
+                                       std::is_same_v<Container<Type, Allocator>, std::list<Type, Allocator>>)>>
 void print_ip(Container<Type, Allocator> c) {
-    std::cout << "enabled for any container" << std::endl;
+    print_container(c);
 }
 
-// Печать std::tuple!!!
-// Включается только для std::tuple с одинаковыми элементами
-template <template <typename> typename Tp, typename... Args, typename = std::enable_if_t<check<Tp<Args...>>::value>>
+// Шаблон с бесконечным числом парамтеров
+// Включается только для std::tuple
+template <template <typename> typename Tp, typename... Args,
+          typename = std::enable_if_t<std::is_same_v<std::tuple<Args...>, Tp<Args...>>>>
 void print_ip(Tp<Args...> c) {
-    std::cout << "enabled for tuple" << std::endl;
+    print_tuple(c);
 }

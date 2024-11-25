@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.5)
 
 project(otus-4)
 #add_compile_options(-Werror)
-add_compile_options(-Wall)
-add_compile_options(-Wextra)
-add_compile_options(-Warray-bounds)
+#add_compile_options(-Wall)
+#add_compile_options(-Wextra)
+#add_compile_options(-Warray-bounds)
 #add_compile_options(-Weffc++)
 
 add_executable(print_ip src/main.cpp)
